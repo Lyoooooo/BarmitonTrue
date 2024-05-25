@@ -6,6 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   Button,
+  StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 // Importez les modules Firebase nécessaires ici
@@ -59,31 +60,64 @@ export default function Accueil() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={{ margin: 10 }}>
+    <View style={styles.itemContainer}>
       <Image
         source={{ uri: item.strDrinkThumb }}
-        style={{ width: 100, height: 100 }}
+        style={styles.drinkImage}
       />
-      <Text>{item.strDrink}</Text>
+      <Text style={styles.drinkName}>{item.strDrink}</Text>
     </View>
   );
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="orange" />
       </View>
     );
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Button title="Déconnexion" onPress={handleDeconnexion} />
       <FlatList
         data={popularDrinks}
         renderItem={renderItem}
         keyExtractor={(item) => item.idDrink}
+        contentContainerStyle={styles.flatListContainer}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flatListContainer: {
+    paddingBottom: 20,
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  drinkImage: {
+    width: 100,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 10,
+  },
+  drinkName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});
